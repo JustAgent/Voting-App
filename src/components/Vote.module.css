@@ -1,0 +1,7 @@
+.vote {
+    display: none;
+}
+
+.vote.active {
+    display: block;
+}

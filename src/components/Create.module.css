@@ -1,0 +1,7 @@
+.create {
+    display: none;
+}
+
+.create.active {
+    display: block;
+}

@@ -1,24 +1,54 @@
-import logo from './logo.svg';
 import './App.css';
-
+import { useState } from 'react';
+import Vote from './components/Vote';
+import Create from './components/Create';
+import useInput from './hooks/useInput';
 function App() {
+
+  const [members, setMembers] = useState([
+    
+])
+
+const [addresses, setAddresses] = useState(
+  {}
+)    
+
+  
+
+  let votingName = useInput('')
+
+
+  const addMember = (newMember) => {
+  newMember.id = members.length
+  setMembers([...members, newMember ])
+}
+
+  const deleteMember = (member) => {
+  setMembers(members.filter(m => m.id !== member))
+}
+
+  const handleNameChange = (newMember) => {
+    addresses[newMember.id] = newMember.address
+}
+  const submit = () => {
+    console.log(votingName.value)
+    console.log(addresses)
+    setAddresses({})
+    setMembers([])
+    votingName = ''
+
+  }
+
+  const [visible, setVisible] = useState(true)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <div>
+            <div>LOGO</div>
+            <button onClick={() => setVisible(true)}>Create voting</button>
+            <button onClick={() => setVisible(false)}>Vote</button>
+            <Create  onChange={handleNameChange} votingName={votingName} deleteMember={deleteMember} addMember={addMember} members={members} visible={visible} setVisible={setVisible} submit={submit}  />
+            <Vote visible={visible} setVisible={setVisible}/>
+            
+        </div>
   );
 }
 
