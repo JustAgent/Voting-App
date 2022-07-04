@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Vote from './components/Vote';
 import Create from './components/Create';
 import useInput from './hooks/useInput';
+import ConnectPage from './components/ConnectPage';
 function App() {
 
   const [members, setMembers] = useState([
@@ -43,8 +44,10 @@ const [addresses, setAddresses] = useState(
   return (
     <div>
             <div>LOGO</div>
+            <ConnectPage />
             <button onClick={() => setVisible(true)}>Create voting</button>
             <button onClick={() => setVisible(false)}>Vote</button>
+            
             <Create  onChange={handleNameChange} votingName={votingName} deleteMember={deleteMember} addMember={addMember} members={members} visible={visible} setVisible={setVisible} submit={submit}  />
             <Vote visible={visible} setVisible={setVisible}/>
             
