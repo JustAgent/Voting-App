@@ -1,20 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
 
-// TO DO
-// connect gh +
-// Add f list of people who can vote +
-// Add f RETURN  USERS OF EACH VAR +
-// Add f RETURN RESULT +
-// MAKE RETURN OF ALLOWED USERS +
-// Replace count of votes => array of voters; counts = array.len + 
-// Add f check users active votes // need to delete voting first +
-// REMAKE GETVOTES + 
-// Add f watching current result // using get votes +
-// Research the "delete" method +
-// Add f end voting (save results into variable(call GetVotes), delete info about voting, return variable) +
-// Add f getVariants
-
 contract Vote {
     
     address private _owner;
@@ -34,19 +20,19 @@ contract Vote {
     }
     
     struct VotingData {
-        uint[] variantsForEachVoting;
-        mapping(uint => address[]) voters;  
+        string[] variantsForEachVoting;
+        mapping(string => address[]) voters;  
         mapping(address => bool) isVoted;
         address[] allowedUsers;  
         uint[] result;
         mapping(address => bool) allowedUsersMapping;
     }
     
-    function _createVoting(string memory _votingName, uint[] memory variants, address[] memory _allowedUsers) external payable{
-        //require UNIQ name of voting
+    function _createVoting(string memory _votingName, string[] memory variants, address[] memory _allowedUsers) external payable{
         require(  _exists(_votingName, userVotings[msg.sender]) == false, "Name is taken" );
-        
-        _voting[msg.sender][_votingName].variantsForEachVoting = variants;
+        for (uint i = 0; i<variants.length; i++){
+             _voting[msg.sender][_votingName].variantsForEachVoting.push(variants[i]);
+        }
         userVotings[msg.sender].push(_votingName);
         
         if (_allowedUsers.length != 0) {
@@ -63,8 +49,7 @@ contract Vote {
         }
     }
     
-    function _vote(address votingOwner, string memory _votingName, uint _index) external {
-        require(_index<_voting[votingOwner][_votingName].variantsForEachVoting.length, "Wrong index");
+    function _vote(address votingOwner, string memory _votingName, string memory _index) external {
         require(votingOwner != msg.sender, 'Not for owner');
         require(_voting[votingOwner][_votingName].isVoted[msg.sender] == false, "Can vote only 1 time");
         require(_voting[votingOwner][_votingName].allowedUsers.length == 0 ||
@@ -74,7 +59,6 @@ contract Vote {
         _voting[votingOwner][_votingName].voters[_index].push(msg.sender);
     }
     
-    // function deleteVote()
     
     function getUserVotings(address ownerAddress) public view returns(string[] memory) {
         return userVotings[ownerAddress];
@@ -84,26 +68,25 @@ contract Vote {
         return _voting[ownerAddress][votingName].allowedUsers;
     }
     
-    function getVoters(address ownerAddress, string memory votingName, uint index) view public returns(address[] memory) {
+    function getVoters(address ownerAddress, string memory votingName, string memory index) view public returns(address[] memory) {
         return  _voting[ownerAddress][votingName].voters[index];
     }
     
     function getVotes(address ownerAddress, string memory votingName) public returns(uint[] memory) {
         uint varsCount =  _voting[ownerAddress][votingName].variantsForEachVoting.length;
-        
         for (uint i=0;i<varsCount;i++) {
-            //Needs to collect size of each variant and them them all together 
-            _voting[ownerAddress][votingName].result.push(_voting[ownerAddress][votingName].voters[i].length);
+            _voting[ownerAddress][votingName].result.push(_voting[ownerAddress][votingName].voters[_voting[ownerAddress][votingName].variantsForEachVoting[i]].length);
         }
-        
-        return _voting[ownerAddress][votingName].result; 
+        uint[] memory _result = _voting[ownerAddress][votingName].result;
+        delete _voting[ownerAddress][votingName].result;
+        return _result; 
     }
     
     function getActive(address ownerAddress) public view returns(string[] memory){
         return userVotings[ownerAddress];
     }
     
-    function getVariants(address ownerAddress, string memory votingName) public view returns(uint[] memory) {
+    function getVariants(address ownerAddress, string memory votingName) public view returns(string[] memory) {
         return  _voting[ownerAddress][votingName].variantsForEachVoting;
     }
 
@@ -113,7 +96,6 @@ contract Vote {
         delete _voting[msg.sender][votingName];
         for (uint i = 0; i < userVotings[msg.sender].length; i++){
             if (keccak256(abi.encodePacked(votingName)) == keccak256(abi.encodePacked(userVotings[msg.sender][i]))) {
-                //Add normal remove
                 delete userVotings[msg.sender][i];
                 break;
             }

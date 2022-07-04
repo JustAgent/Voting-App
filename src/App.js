@@ -60,9 +60,7 @@ function App() {
   const handleCurrentVariantChange = (newVariant) => {
     currentVariants[newVariant.id] = newVariant.variant
 }
-  const _getActive = () => {
-    getActive()
-  }
+  
    
   const submit = () => {
 
@@ -93,7 +91,6 @@ function App() {
             <ConnectPage />
             <button onClick={() => setVisible(true)}>Create voting</button>
             <button onClick={() => setVisible(false)}>Vote</button>
-            <button onClick={_getActive}></button>
             <Create  onChange={handleNameChange}  onVariantChange={handleCurrentVariantChange} votingName={votingName} deleteMember={deleteMember} deleteVariant={deleteVariant}
             addMember={addMember} addVariant={addVariant} members={members} variants={variants} visible={visible} submit={submit}/>
 

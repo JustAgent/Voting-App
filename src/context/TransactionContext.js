@@ -70,11 +70,12 @@ export const TransactionProvider = ( {children} ) => {
         }
     } 
 
-    const getActive = () => {
+    const getActive = async (ownerAddress) => {
         const transactionContract =  createEthereumContract()
-        const _getActive = transactionContract.getActive(currentAccount)
-        console.log(_getActive)
-        console.log(currentAccount)
+        const _getActive = await transactionContract.getActive(ownerAddress)
+        console.log('Result ',  _getActive  )
+        //console.log('OwnerAddress ',ownerAddress)
+        return _getActive;
     }
      
 
