@@ -6,7 +6,8 @@ const MemberForm= ({member, deleteMember, onChange}) => {
     const handleNameChange = (e) => {
         const address = e.target.value
         const newMember = {
-            address, id: member.id 
+            id: member.id,
+            address: address,  
         }
         onChange(newMember)
     }
@@ -22,7 +23,7 @@ const MemberForm= ({member, deleteMember, onChange}) => {
     return (
         <div>
         <input  onChange={handleNameChange} placeholder={member.id}></input>
-        <button onClick={del}></button>        
+        <button onClick={del}>Delete</button>        
         </div>
     )
 
