@@ -36,7 +36,7 @@ const Vote = ({visible, setVisible}) => {
             <h2>0xA73BEC61Ba541C2B526F31755F8440c4ac45072D</h2>
             <input onChange={handlerAddressChange} placeholder='owner address'></input>
             <button onClick={SearchActive}>Search {activeVotings.length}</button>
-           {activeVotings.length>0 && ( <VotingsList activeVotings={activeVotings}  /> ) }
+           {activeVotings.length>0 && ( <VotingsList  ownerAddress={ownerAddress} activeVotings={activeVotings}  /> ) }
         </div>
     )
 }

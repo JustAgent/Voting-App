@@ -5,7 +5,7 @@ import Create from './components/Create';
 import useInput from './hooks/useInput';
 import ConnectPage from './components/ConnectPage';
 import { TransactionContext } from './context/TransactionContext';
-
+ 
 function App() {
 
   const {createVoting, getActive} = useContext(TransactionContext);

@@ -1,7 +1,13 @@
-const VotingForm = ({voting}) => {
+const VotingForm = ({voting, setActive}) => {
+
+    const set = () => {
+        setActive(voting)
+    }
+     
+
     return ( 
         <div>
-            <button>{voting}</button>
+            <button onClick={set}>{voting}</button>
         </div>
      );
 }

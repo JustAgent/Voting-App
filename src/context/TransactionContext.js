@@ -77,6 +77,12 @@ export const TransactionProvider = ( {children} ) => {
         //console.log('OwnerAddress ',ownerAddress)
         return _getActive;
     }
+
+    const getVariants = async (ownerAddress, votingName) => {
+        const transactionContract =  createEthereumContract()        
+        const _getVariants = await transactionContract.getVariants(ownerAddress, votingName)
+        return _getVariants;
+    }
      
 
     useEffect(() => {
@@ -84,7 +90,7 @@ export const TransactionProvider = ( {children} ) => {
     }, []);
 
     return (
-        <TransactionContext.Provider value={ {connectWallet, currentAccount, createVoting, getActive} }>
+        <TransactionContext.Provider value={ {connectWallet, currentAccount, createVoting, getActive, getVariants} }>
             {children}
         </TransactionContext.Provider>
     )
