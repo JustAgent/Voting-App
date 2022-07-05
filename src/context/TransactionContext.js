@@ -71,16 +71,35 @@ export const TransactionProvider = ( {children} ) => {
     } 
 
     const getActive = async (ownerAddress) => {
-        const transactionContract =  createEthereumContract()
-        const _getActive = await transactionContract.getActive(ownerAddress)
-        console.log('Result ',  _getActive  )
-        //console.log('OwnerAddress ',ownerAddress)
+        try {
+            const transactionContract =  createEthereumContract()
+            const _getActive = await transactionContract.getActive(ownerAddress)
+            console.log('Result ',  _getActive  )
         return _getActive;
+        } catch (error) {
+            return false
+        }
+        
+    }
+
+    const _vote = async (ownerAddress, votingName, variant) => {
+        try {
+            const transactionContract =  createEthereumContract()
+            const _vote = await transactionContract._vote(ownerAddress, votingName, variant)
+            if (_vote) {
+                return true
+            }
+        } catch (error) {
+            console.log(error)
+            return false
+        }
+        
     }
 
     const getVariants = async (ownerAddress, votingName) => {
-        const transactionContract =  createEthereumContract()        
+        const transactionContract =  createEthereumContract()
         const _getVariants = await transactionContract.getVariants(ownerAddress, votingName)
+
         return _getVariants;
     }
      
@@ -90,7 +109,7 @@ export const TransactionProvider = ( {children} ) => {
     }, []);
 
     return (
-        <TransactionContext.Provider value={ {connectWallet, currentAccount, createVoting, getActive, getVariants} }>
+        <TransactionContext.Provider value={ {connectWallet, currentAccount, createVoting, getActive, getVariants, _vote} }>
             {children}
         </TransactionContext.Provider>
     )

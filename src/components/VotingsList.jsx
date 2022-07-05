@@ -4,7 +4,7 @@ import { TransactionContext } from './../context/TransactionContext';
 import VotingVariantsList from './VotingVariantsList';
 
 
-const VotingsList = ({activeVotings, ownerAddress}) => {
+const VotingsList = ({activeVotings, ownerAddress, setVariant, toVote, getCurrentTab}) => {
 
     const {getVariants} = useContext(TransactionContext);
     const [currentTab, setCurrentTab] = useState()
@@ -12,29 +12,26 @@ const VotingsList = ({activeVotings, ownerAddress}) => {
     
 
     useEffect(() => {
-        console.log('cur', currentTab);
+        getCurrentTab(currentTab)
         fetchVariants(ownerAddress, currentTab)}, [currentTab])
 
     const setActive =  (value) => {
         setCurrentTab(value)
     }
 
-    const fetchVariants = async (ownerAddress, currentTab) => {        
+    const fetchVariants = async (ownerAddress, currentTab) => {       
         const temp =  await getVariants(ownerAddress,currentTab)
         setVariants(temp)
-        console.log('TEMP', temp);
     }
      
 
-    //<VotingVariantsList variants={variants} />
     return ( 
         
         <div>
             <h2>Choose certain voting</h2>
             {activeVotings.map((voting) => 
             <VotingForm  voting={voting} key={voting} setActive={setActive}  />)}
-            {variants.length>0 && ( <VotingVariantsList variants={variants} /> ) }
-
+            {variants.length>0 && ( <VotingVariantsList toVote={toVote} setVariant={setVariant} variants={variants} /> ) }
         </div>
      );
 }

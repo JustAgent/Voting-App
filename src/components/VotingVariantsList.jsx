@@ -4,16 +4,18 @@ import { TransactionContext } from './../context/TransactionContext';
 import VotingVariantsForm from './VotingVariantsForm';
 
 
-const VotingVariantsList = ({variants}) => {
+const VotingVariantsList = ({variants, setVariant, toVote}) => {
 
-   
-    console.log('VAR',variants)
+   const commit = () => {
+        toVote()
+   }
+
     return ( 
         <div>
             <h2>Your choice</h2>
             {variants.map((variant) => 
-            <VotingVariantsForm  variant={variant} key={variant}  />)}
-            <button>Commit</button>
+            <VotingVariantsForm  setVariant={setVariant} variant={variant} key={variant}  />)}
+            <button onClick={commit}>Commit</button>
         </div>
      );
 }
