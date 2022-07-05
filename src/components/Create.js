@@ -8,7 +8,7 @@ const Create = (props) => {
 
 
     const rootClasses = [cl.create]
-    if (props.visible) {
+    if (props.visible == 1) {
         rootClasses.push(cl.active)
     }
     return (

@@ -21,13 +21,14 @@ const createEthereumContract = () => {
 export const TransactionProvider = ( {children} ) => {
 
     const [currentAccount, setCurrentAccount] = useState('')
+    //const [accs, setAccs] = useState()
 
     const   checkIfWalletIsConnected = async () => {
         try {
             if (!ethereum) return alert('Please install metamask');
     
             const accounts = await ethereum.request({ method: 'eth_accounts' })
-    
+
             if (accounts.length) {
                 setCurrentAccount(accounts[0]);
             }
@@ -74,7 +75,6 @@ export const TransactionProvider = ( {children} ) => {
         try {
             const transactionContract =  createEthereumContract()
             const _getActive = await transactionContract.getActive(ownerAddress)
-            console.log('Result ',  _getActive  )
         return _getActive;
         } catch (error) {
             return false
@@ -96,6 +96,40 @@ export const TransactionProvider = ( {children} ) => {
         
     }
 
+    const getVotes = async (ownerAddress, votingName) => {
+        try {
+            const transactionContract =  createEthereumContract()
+            const result = await transactionContract.getVotes(ownerAddress, votingName)
+            if (result) {
+                return result
+            }
+        } catch (error) {
+            console.log(error)
+            return false
+        }
+        
+    }
+
+    const endVoting = async (votingName) => {
+        try {
+            const transactionContract =  createEthereumContract()
+            const result = await transactionContract.endVoting(votingName)
+            if (result) {
+                return result
+            }
+        } catch (error) {
+            console.log(error)
+            return false
+        }
+        
+    }
+
+    // const check = () => {
+    //     console.log(currentAccount)
+    //     console.log('accs', accs)
+    // }
+     
+
     const getVariants = async (ownerAddress, votingName) => {
         const transactionContract =  createEthereumContract()
         const _getVariants = await transactionContract.getVariants(ownerAddress, votingName)
@@ -109,7 +143,7 @@ export const TransactionProvider = ( {children} ) => {
     }, []);
 
     return (
-        <TransactionContext.Provider value={ {connectWallet, currentAccount, createVoting, getActive, getVariants, _vote} }>
+        <TransactionContext.Provider value={ {connectWallet, currentAccount, createVoting, getActive, getVotes, getVariants, _vote, endVoting} }>
             {children}
         </TransactionContext.Provider>
     )

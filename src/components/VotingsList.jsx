@@ -4,16 +4,19 @@ import { TransactionContext } from './../context/TransactionContext';
 import VotingVariantsList from './VotingVariantsList';
 
 
-const VotingsList = ({activeVotings, ownerAddress, setVariant, toVote, getCurrentTab}) => {
+const VotingsList = (props) => {
 
     const {getVariants} = useContext(TransactionContext);
     const [currentTab, setCurrentTab] = useState()
     const [variants, setVariants] = useState([])
     
+    let activeVotingsFiltered = props.activeVotings.filter(function (el) {
+        return el != '';
+    });
 
     useEffect(() => {
-        getCurrentTab(currentTab)
-        fetchVariants(ownerAddress, currentTab)}, [currentTab])
+        props.getCurrentTab(currentTab)
+        fetchVariants(props.ownerAddress, currentTab)}, [currentTab])
 
     const setActive =  (value) => {
         setCurrentTab(value)
@@ -29,9 +32,9 @@ const VotingsList = ({activeVotings, ownerAddress, setVariant, toVote, getCurren
         
         <div>
             <h2>Choose certain voting</h2>
-            {activeVotings.map((voting) => 
+            {activeVotingsFiltered.map((voting) => 
             <VotingForm  voting={voting} key={voting} setActive={setActive}  />)}
-            {variants.length>0 && ( <VotingVariantsList toVote={toVote} setVariant={setVariant} variants={variants} /> ) }
+            {variants.length>0 && ( <VotingVariantsList toVote={props.toVote} setVariant={props.setVariant} variants={variants} /> ) }
         </div>
      );
 }

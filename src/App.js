@@ -5,6 +5,7 @@ import Create from './components/Create';
 import useInput from './hooks/useInput';
 import ConnectPage from './components/ConnectPage';
 import { TransactionContext } from './context/TransactionContext';
+import EndVoting from './components/EndVoting';
  
 function App() {
 
@@ -84,17 +85,18 @@ function App() {
 
   }
 
-  const [visible, setVisible] = useState(true)
+  const [visible, setVisible] = useState(1)
   return (
     <div>
             <div>LOGO</div>
             <ConnectPage />
-            <button onClick={() => setVisible(true)}>Create voting</button>
-            <button onClick={() => setVisible(false)}>Vote</button>
+            <button onClick={() => setVisible(1)}>Create voting</button>
+            <button onClick={() => setVisible(2)}>Vote</button>
+            <button onClick={() => setVisible(3)}>Finish voting</button>
             <Create  onChange={handleNameChange}  onVariantChange={handleCurrentVariantChange} votingName={votingName} deleteMember={deleteMember} deleteVariant={deleteVariant}
             addMember={addMember} addVariant={addVariant} members={members} variants={variants} visible={visible} submit={submit}/>
-
-            <Vote visible={visible} setVisible={setVisible}/>
+            <Vote visible={visible} />
+            <EndVoting visible={visible}  />
             
         </div>
   );
